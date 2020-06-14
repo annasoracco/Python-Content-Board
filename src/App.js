@@ -10,53 +10,107 @@ import { Container } from 'react-bootstrap';
 
 class App extends Component {
   state = {
-    searchText: [],
-    loading: false,
+    matched: [],
+    categories: [],
+    all: false,
+    selected: false,
+    searched: false,
     cards: [
       {
         id: 1,
         image: page1,
         link:
           'https://docs.microsoft.com/en-us/azure/azure-functions/functions-machine-learning-tensorflow?tabs=bash',
-        tags: ['hands on', 'AI', 'machine learning', 100],
+        tags: ['hands on', 'ai', 'machine learning', '100'],
         title: 'Machine Learning',
         text: '',
+        category: 'Videos',
       },
       {
         id: 2,
         image: page2,
         link:
           'https://docs.microsoft.com/en-us/learn/paths/intro-to-ml-with-python/',
-        tags: ['hands on', 'AI', 'machine learning', 100],
+        tags: ['hands on', 'ai', 'machine learning', '100'],
         title: 'Intro to Python',
         text: '',
+        category: 'Demos',
       },
       {
         id: 3,
         image: page3,
         link: 'https://channel9.msdn.com/Series/More-Python-for-Beginners',
-        tags: ['videos', 'Python', 100],
+        tags: ['videos', 'python', '100'],
         title: 'More Python',
         text: '',
+        category: 'Hands on labs',
       },
     ],
   };
 
+  handleClick = (clicked) => {
+    this.setState({ searched: false });
+    this.setState({ selected: true });
+    this.setState({ categories: [] });
+    if (clicked === 'All') {
+      this.showAll();
+    }
+
+    let cats = this.state.cards.filter((card) => card.category === clicked);
+    this.setState((state) => {
+      const categories = state.categories.concat(cats[0]);
+
+      return {
+        categories,
+      };
+    });
+  };
+
+  showAll = () => {
+    this.setState({ all: true, selected: false, searched: false });
+  };
+
   searchUsers = (text) => {
-    this.setState({ loading: true });
+    this.setState({ selected: false });
+    this.setState({ searched: true });
+    this.setState({ matched: [] });
 
-    const list = this.state.searchText.push(text);
+    this.state.cards.forEach((x) => {
+      x.tags.forEach((t) => {
+        if (t === text.toLowerCase()) {
+          this.addArrItem(x);
+        }
+      });
+    });
+  };
 
-    this.setState({ searchText: list, loading: false });
-    console.log(this.state.searchText);
+  addArrItem = (x) => {
+    this.setState((state) => {
+      const matched = state.matched.concat(x);
+
+      return {
+        matched,
+      };
+    });
   };
 
   render() {
     return (
       <Container fluid>
         <Header />
-        <PageNav searchUsers={this.searchUsers} />
-        <CardList cards={this.state.cards} />
+        <PageNav
+          searchUsers={this.searchUsers}
+          handleClick={this.handleClick}
+        />
+        <CardList
+          removeArrayItem={this.removeArrayItem}
+          cards={this.state.cards}
+          matched={this.state.matched}
+          searched={this.state.searched}
+          categories={this.state.categories}
+          selected={this.state.selected}
+          all={this.state.all}
+        />
       </Container>
     );
   }

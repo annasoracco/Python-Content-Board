@@ -8,7 +8,7 @@ import { Card } from 'react-bootstrap';
 const InfoCard = ({ card: { title, text, image, link } }) => {
   return (
     <div>
-      <Card border='light' style={{ width: '18rem' }}>
+      <Card>
         <a href={link} rel='noopener noreferrer' target='_blank'>
           <Card.Img variant='top' src={image} />
         </a>
