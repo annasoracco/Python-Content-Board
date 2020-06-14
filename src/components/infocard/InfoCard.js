@@ -10,7 +10,7 @@ const InfoCard = ({ card: { title, text, image, link } }) => {
     <div>
       <Card>
         <a href={link} rel='noopener noreferrer' target='_blank'>
-          <Card.Img variant='top' src={image} />
+          <Card.Img className='image' variant='top' src={image} />
         </a>
         <Card.Body>
           <Card.Title className='title'>{title}</Card.Title>

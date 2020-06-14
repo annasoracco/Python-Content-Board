@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CardList from './components/cardlist/CardList';
 import Header from './components/header/Header';
 import PageNav from './components/navbar/PageNav';
+import Footer from './components/footer/Footer';
 import page1 from './images/page1.png';
 import page2 from './images/page2.png';
 import page3 from './images/page3.png';
@@ -111,6 +112,7 @@ class App extends Component {
           selected={this.state.selected}
           all={this.state.all}
         />
+        <Footer />
       </Container>
     );
   }
